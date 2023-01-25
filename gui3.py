@@ -36,17 +36,25 @@ class Menu(tk.Frame):
         for train in self.controller.shared_data["all_trains"]:
             choices.append(f"Tåg-ID: {train.id} -- {train.date} {train.time} "
               f"-- {train.train_model}: {train.start} - {train.destination}")
+        
+        # No trains available
+        if len(choices) == 0:
+            welcome = Label(self,
+                        text="  INGA BOKBARA TÅG ", bg="green", fg="white")
+        else:
+            menu = OptionMenu(self, tkvar, *choices, command=self.go_to_action)
+            menu.grid(row=2, column=2, sticky="nsew", columnspan=2)
+
+
 
         myfont = font.Font(family='Helvetica', size=20, weight='bold')
         tkvar = self.controller.shared_data["chosen"]
-        menu = OptionMenu(self, tkvar, *choices, command=self.go_to_action)
         tkvar.set('Välj avgång')
         quit_button = Button(self, text="Avsluta program", fg="red", command=self.quit_app)
         welcome["font"] = myfont
         Label(self,text="", bg="green").grid(row=0, columnspan=2)
 
         welcome.grid(row=1, column=2, columnspan=2, pady=10)
-        menu.grid(row=2, column=2, sticky="nsew", columnspan=2)
         quit_button.grid(row=2, column=4, sticky="nsew", columnspan=2, padx=10)
 
     # Show the button that takes the user to the action page
